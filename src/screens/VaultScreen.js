@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, Button } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import SecretKey from "../components/SecretKey";
 
-const VaultScreen = () => {
+const VaultScreen = (props) => {
   let [allKeys, setAllKeys] = useState([]);
   const refreshAPI = async () => {
     console.log("Test -------><----- ");
@@ -13,7 +21,7 @@ const VaultScreen = () => {
   };
 
   return (
-    <View>
+    <ScrollView>
       <Button
         style={{ marginVertical: 10 }}
         onPress={() => {
@@ -26,12 +34,22 @@ const VaultScreen = () => {
         data={allKeys}
         renderItem={({ item }) => {
           return (
-            <SecretKey title={item.walletField} passkey={item.walletPassKey} />
+            // <SecretKey title={item.walletField} passkey={item.walletPassKey} />
+            <TouchableOpacity
+              style={styles.labelStyle}
+              onPress={() => {
+                props.navigation.navigate("VaultSecret", {
+                  passKey: item.walletPassKey,
+                });
+              }}
+            >
+              <Text style={{ color: "#ddeeff" }}>{item.walletField}</Text>
+            </TouchableOpacity>
           );
           //   <Text style={styles.labelStyle}>{item.walletField}</Text>;
         }}
       />
-    </View>
+    </ScrollView>
   );
 };
 
